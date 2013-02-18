@@ -22,21 +22,20 @@ var ADAPT_CONFIG = {
   // true = Change on window resize and page tilt.
   dynamic: true,
 
-  // First range entry is the minimum.
-  // Last range entry is the maximum.
-  // Separate ranges by "to" keyword.
   range: [
-    '0px    to 760px  = mobile.min.css',
-    '760px  to 980px  = 720.min.css',
-    '980px  to 1280px = 960.min.css',
-    '1280px to 1600px = 1200.min.css',
-    '1600px to 1940px = 1560.min.css',
-    '1940px to 2540px = 1920.min.css',
-    '2540px           = 2520.min.css'
-  ]
+    {from: 0   , name: "mobile"},
+    {from: 760 , name: "720"},
+    {from: 980 , name: "960"},
+    {from: 1280, name: "1200"},
+    {from: 1600, name: "1560"},
+    {from: 1940, name: "1920"},
+    {from: 2540, name: "2520"}
+  ],
+
+  suffix: ".min.css"
 };
 </script>
-<script src="assets/js/adapt.min.js"></script>
+<script src="assets/js/adapt.js"></script>
 </head>
 <body>
 <div class="container_12">
@@ -156,21 +155,22 @@ var ADAPT_CONFIG = {
   // true = Change on window resize and page tilt.
   dynamic: true,
 
-  // Optional callback... myCallback(i, width)
+  // Optional callback... myCallback(rangeObj, i, width)
   callback: myCallback,
 
-  // First range entry is the minimum.
-  // Last range entry is the maximum.
-  // Separate ranges by "to" keyword.
+  // Range order matters. The name corresponds to the filename to load.
   range: [
-    '0px    to 760px  = mobile.css',
-    '760px  to 980px  = 720.css',
-    '980px  to 1280px = 960.css',
-    '1280px to 1600px = 1200.css',
-    '1600px to 1920px = 1560.css',
-    '1940px to 2540px = 1920.css',
-    '2540px           = 2520.css'
-  ]
+    {from: 0   , name: "mobile"},
+    {from: 760 , name: "720"},
+    {from: 980 , name: "960"},
+    {from: 1280, name: "1200"},
+    {from: 1600, name: "1560"},
+    {from: 1940, name: "1920"},
+    {from: 2540, name: "2520"}
+  ],
+
+  // Will be appended to the "name" property of the range. Default is ".css"
+  suffix: ".min.css"
 };</pre>
   </div>
   <div class="grid_5">
@@ -181,7 +181,7 @@ var ADAPT_CONFIG = {
       <em>For all possible options</em> &mdash; <a href="http://sonspring.com/journal/adapt-js-explained#how-to-use">Read more</a>
     </p>
     <p>
-      Adapt.js, accepts a few parameters: <code>path</code> is where your stylesheets reside, <code>dynamic</code> is a boolean (<code>true</code> or <code>false</code>) that says whether to watch the <code>window</code> for its <code>resize</code> event, also triggered by tablet or phone tilt. Widths and optional CSS files are specified in <code>range</code>. The defaults are shown in the adjacent code example. You can also specify an optional <code>callback</code> function, that will pass <code>range</code> index and width.
+      Adapt.js, accepts a few parameters: <code>path</code> is where your stylesheets reside, <code>dynamic</code> is a boolean (<code>true</code> or <code>false</code>) that says whether to watch the <code>window</code> for its <code>resize</code> event, also triggered by tablet or phone tilt. Widths and optional CSS files are specified in <code>range</code>. The defaults are shown in the adjacent code example. You can also specify an optional <code>callback</code> function, that will receive the <code>range</code>, its index, and screen width.
     </p>
     <hr />
     <h3>

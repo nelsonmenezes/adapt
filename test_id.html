@@ -48,7 +48,7 @@ html#range_5 #p_5 {
 </style>
 <script>
 // Called by Adapt.js
-function myCallback(i, width) {
+function myCallback(range, i, width) {
   // Replace HTML tag's ID.
   document.documentElement.id = 'range_' + i;
 
@@ -65,20 +65,17 @@ var ADAPT_CONFIG = {
   // Optional callback... myCallback(i, width)
   callback: myCallback,
 
-  // First range entry is the minimum.
-  // Last range entry is the maximum.
-  // Separate ranges by "to" keyword.
   range: [
-    '0 to 760',
-    '760 to 980',
-    '980 to 1280',
-    '1280 to 1600',
-    '1600 to 1920',
-    '1920'
+    {from: 0},
+    {from: 760},
+    {from: 980},
+    {from: 1280},
+    {from: 1600},
+    {from: 1920}
   ]
 };
 </script>
-<script src="assets/js/adapt.min.js"></script>
+<script src="assets/js/adapt.js"></script>
 </head>
 <body>
 <p>

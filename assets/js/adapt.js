@@ -26,6 +26,7 @@
   var path = config.path ? config.path : '';
   var range = config.range;
   var range_len = range.length;
+  var file_suffix = config.suffix || '.css';
 
   // Create empty link tag:
   // <link rel="stylesheet" />
@@ -34,13 +35,13 @@
   css.media = 'screen';
 
   // Called from within adapt().
-  function change(i, width) {
+  function change(range, i, width) {
     // Set the URL.
     css.href = url;
     url_old = url;
 
     // Call callback, if defined.
-    callback && callback(i, width);
+    callback && callback(range, i, width);
   }
 
   // Adapt to width.
@@ -53,52 +54,36 @@
     // Parse viewport width.
     var width = d.documentElement ? d.documentElement.clientWidth : 0;
 
-    // While loop vars.
-    var arr, arr_0, val_1, val_2, is_range, file;
-
     // How many ranges?
     var i = range_len;
     var last = range_len - 1;
+    var prevFrom;
+    var thisRange;
 
     while (i--) {
       // Blank if no conditions met.
       url = '';
 
-      // Turn string into array.
-      arr = range[i].split('=');
+      // Shortcut
+      thisRange = range[i];
 
-      // Width is to the left of "=".
-      arr_0 = arr[0];
-
-      // File name is to the right of "=".
-      // Presuppoes a file with no spaces.
-      // If no file specified, make empty.
-      file = arr[1] ? arr[1].replace(/\s/g, '') : undefined;
-
-      // Assume max if "to" isn't present.
-      is_range = arr_0.match('to');
-
-      // If it's a range, split left/right sides of "to",
-      // and then convert each one into numerical values.
-      // If it's not a range, turn maximum into a number.
-      val_1 = is_range ? parseInt(arr_0.split('to')[0], 10) : parseInt(arr_0, 10);
-      val_2 = is_range ? parseInt(arr_0.split('to')[1], 10) : undefined;
-
-      // Check for maxiumum or range.
-      if ((!val_2 && i === last && width > val_1) || (width > val_1 && width <= val_2)) {
+      // Check for maximum or range.
+      if ((!prevFrom && i === last && width > prevFrom) || (width > thisRange.from && width <= prevFrom)) {
         // Build full URL to CSS file.
-        file && (url = path + file);
+        thisRange.name && (url = path + thisRange.name + file_suffix);
 
         // Exit the while loop. No need to continue
         // if we've already found a matching range.
         break;
       }
+
+      prevFrom = thisRange.from;
     }
 
     // Was it created yet?
     if (!url_old) {
       // Apply changes.
-      change(i, width);
+      change(thisRange, i, width);
 
       // Add the CSS, only if path is defined.
       // Use faster document.head if possible.
@@ -106,7 +91,7 @@
     }
     else if (url_old !== url) {
       // Apply changes.
-      change(i, width);
+      change(thisRange, i, width);
     }
   }
 
