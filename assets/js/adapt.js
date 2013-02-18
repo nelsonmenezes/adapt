@@ -68,7 +68,7 @@
       thisRange = range[i];
 
       // Check for maximum or range.
-      if ((!prevFrom && i === last && width > prevFrom) || (width > thisRange.from && width <= prevFrom)) {
+      if ((!prevFrom && i === last && width > thisRange.from) || (width > thisRange.from && width <= prevFrom)) {
         // Build full URL to CSS file.
         thisRange.name && (url = path + thisRange.name + file_suffix);
 
